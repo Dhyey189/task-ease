@@ -8,7 +8,7 @@ import axios from "axios";
 import storeUser from '../utils/StoreUser';
 import getWithExpiry from '../utils/GetWithExpiry';
 
-function Signup() {
+function Login() {
   const navigate = useNavigate();
   const [queryParameters] = useSearchParams();
 
@@ -19,7 +19,7 @@ function Signup() {
     }
 
     if (queryParameters.get("code") && queryParameters.get("scope")) {
-      axios.get(`http://127.0.0.1:8000/user-accounts/signin/google/?${queryParameters}&from=signup`)
+      axios.get(`http://127.0.0.1:8000/user-accounts/signin/google/?${queryParameters}&from=login`)
         .then(response => storeUser(response.data))
         .catch(error => console.log(error))
     }
@@ -30,7 +30,7 @@ function Signup() {
 
   const openGoogleLoginPage = useCallback(() => {
     const googleAuthUrl = 'http://accounts.google.com/o/oauth2/v2/auth';
-    const redirectUri = 'signup/';
+    const redirectUri = 'login/';
 
     const scope = [
       'https://www.googleapis.com/auth/userinfo.email',
@@ -54,15 +54,15 @@ function Signup() {
   return (
     <>
       <div className="signup-box">
-        <p className='heading'> Join <Link className="remove-link-decoration " to="/" >TaskEase</Link> </p>
+        <p className='heading'>Welcome back to  <Link className="remove-link-decoration " to="/" >TaskEase.</Link> </p>
         <button className="google-btn" onClick={openGoogleLoginPage}>
           <i><FcGoogle /></i>
-          Signup with Google
+          Login with Google
         </button>
-        <p className="have-account">Already have an account? <Link className="remove-link-decoration " to="/login" >Login</Link></p>
+        <p className="have-account">No account? <Link className="remove-link-decoration " to="/signup" >Create one</Link></p>
       </div>
     </>
   );
 }
 
-export default Signup
+export default Login
