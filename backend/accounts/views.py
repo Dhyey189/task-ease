@@ -10,6 +10,7 @@ from django.shortcuts import redirect
 import requests
 from django.core.exceptions import ValidationError
 
+from accounts.serializers import UserSerializer
 
 def google_get_access_token(*, code, redirect_uri):
     # Reference: https://developers.google.com/identity/protocols/oauth2/web-server#obtainingaccesstokens
@@ -24,10 +25,7 @@ def google_get_access_token(*, code, redirect_uri):
         'redirect_uri': redirect_uri,
         'grant_type': 'authorization_code'
     }
-    print(data)
     response = requests.post(GOOGLE_ACCESS_TOKEN_OBTAIN_URL, data=data)
-    for x in response:
-        print(x)
 
     if not response.ok:
         raise ValidationError('Failed to obtain access token from Google.')
@@ -50,6 +48,15 @@ def google_get_user_info(*, access_token):
     return response.json()
 
 
+def login_or_signup_user(user_data):
+    serializer = UserSerializer(data = user_data)
+    if serializer.is_valid():
+        serializer.save()
+        return serializer.data
+    else:
+        raise ValidationError('Invalid user data')
+
+
 
 class GoogleLoginApi(APIView):
     class InputSerializer(serializers.Serializer):
@@ -63,8 +70,7 @@ class GoogleLoginApi(APIView):
         validated_data = input_serializer.validated_data
 
         code = validated_data.get('code')
-        error = validated_data.get('error') 
-        print(code)
+        error = validated_data.get('error')
         login_url = f'{settings.FRONTEND_BASE_URL}login'
 
         if error or not code:
@@ -79,18 +85,17 @@ class GoogleLoginApi(APIView):
 
         user_data = google_get_user_info(access_token=access_token)
 
-        profile_data = {
-            'email': user_data['email'],
-            'name': user_data['name'],
-            'first_name': user_data['given_name'],
-            'last_name': user_data['family_name'],
-            'profile_picture' : user_data['picture']
-        }
         print(user_data)
-        print(settings.FRONTEND_BASE_URL)
+        user_data = {
+            'email': user_data['email'],
+            'name': user_data.get('name',''),
+            'first_name': user_data.get('first_name',''),
+            'last_name': user_data.get('family_name',''),
+            'profile_picture' : user_data.get('picture','')
+        }
+        
 
-
-        return Response(user_data, status=status.HTTP_201_CREATED)
+        return Response(login_or_signup_user(user_data), status=status.HTTP_201_CREATED)
     
 
 
