@@ -11,6 +11,7 @@ import requests
 from django.core.exceptions import ValidationError
 
 from accounts.serializers import UserSerializer
+from accounts.models import User
 
 def google_get_access_token(*, code, redirect_uri):
     # Reference: https://developers.google.com/identity/protocols/oauth2/web-server#obtainingaccesstokens
@@ -49,12 +50,20 @@ def google_get_user_info(*, access_token):
 
 
 def login_or_signup_user(user_data):
-    serializer = UserSerializer(data = user_data)
-    if serializer.is_valid():
-        serializer.save()
-        return serializer.data
-    else:
-        raise ValidationError('Invalid user data')
+    print(user_data)
+    try:
+        user = User.objects.get(email = user_data['email'])
+    except User.DoesNotExist:
+        serializer = UserSerializer(data = user_data)
+        if serializer.is_valid():
+            user = serializer.save()
+            user_data = {"id" : user.id, "name" : user.name, "email" : user.email, "picture" : user.picture, "phone_number" : user.phone_number}
+            return user_data
+        else:
+            raise ValidationError(serializer.errors)
+    finally:
+        user_data = {"id" : user.id, "name" : user.name, "email" : user.email, "picture" : user.picture, "phone_number" : user.phone_number}
+        return user_data
 
 
 
@@ -78,20 +87,18 @@ class GoogleLoginApi(APIView):
             return redirect(f'{login_url}?{params}')
 
         domain = "http://localhost:3000"
-        api_uri = "/signup/"
-        redirect_uri = f'{domain}{api_uri}'
+        api_uri = request.GET.get('from','')
+        redirect_uri = f'{domain}/{api_uri}/'
 
         access_token = google_get_access_token(code=code, redirect_uri=redirect_uri)
 
         user_data = google_get_user_info(access_token=access_token)
 
-        print(user_data)
         user_data = {
             'email': user_data['email'],
             'name': user_data.get('name',''),
-            'first_name': user_data.get('first_name',''),
-            'last_name': user_data.get('family_name',''),
-            'profile_picture' : user_data.get('picture','')
+            'phone_number': user_data.get('phone_number',''),
+            'picture' : user_data.get('picture','')
         }
         
 
