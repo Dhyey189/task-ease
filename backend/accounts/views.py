@@ -50,20 +50,26 @@ def google_get_user_info(*, access_token):
 
 
 def login_or_signup_user(user_data):
-    print(user_data)
     try:
         user = User.objects.get(email = user_data['email'])
     except User.DoesNotExist:
         serializer = UserSerializer(data = user_data)
         if serializer.is_valid():
             user = serializer.save()
+            print(user)
             user_data = {"id" : user.id, "name" : user.name, "email" : user.email, "picture" : user.picture, "phone_number" : user.phone_number}
             return user_data
         else:
             raise ValidationError(serializer.errors)
     finally:
-        user_data = {"id" : user.id, "name" : user.name, "email" : user.email, "picture" : user.picture, "phone_number" : user.phone_number}
-        return user_data
+        serializer = UserSerializer(instance = user,data = user_data)
+        if serializer.is_valid():
+            user = serializer.save()
+            print(user)
+            user_data = {"id" : user.id, "name" : user.name, "email" : user.email, "picture" : user.picture, "phone_number" : user.phone_number}
+            return user_data
+        else:
+            raise ValidationError(serializer.errors)
 
 
 
