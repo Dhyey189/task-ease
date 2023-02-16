@@ -1,0 +1,48 @@
+.user-name {
+  font-size: 15px;
+  color: #fff;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown button {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+
+.dropdown button img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.dropdown ul {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  display: block;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  z-index: 1;
+}
+
+.dropdown ul li {
+  display: block;
+}
+
+.dropdown ul li a {
+  display: block;
+  padding: 10px;
+  color: #333;
+  text-decoration: none;
+}
+
+
