@@ -10,5 +10,5 @@ class TaskAdmin(admin.ModelAdmin):
 
 @admin.register(Categories)
 class CategoriesAdmin(admin.ModelAdmin):
-    list_display = ('id','name','color_code','created_at','updated_at')
+    list_display = ('id','name','user','updated_at')
 
