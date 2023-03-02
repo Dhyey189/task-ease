@@ -9,12 +9,15 @@ from django.utils.timezone import timezone
 
 class Categories(models.Model):
     # name of category is unique case insensitive
-    name = models.CharField(max_length=50,unique = True, default = "work")
-    description = models.CharField(max_length=255, default = "All tasks related to work, like sending emails, scheduling meetings with clients etc.")
+    name = models.CharField(max_length=50, default = "work")
+    description = models.CharField(max_length=255, default = "This can include tasks related to your job or career, such as deadlines, meetings, projects, and tasks that you need to complete for work.")
     user = models.ForeignKey(User,null=True,on_delete=models.SET_NULL)
-    color_code = models.CharField(max_length=6)
+    color_code = models.CharField(max_length=7, default="#ffffff")
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
+
+    class Meta:
+        unique_together = (('name','user'),)
 
 class Task(models.Model):
     class TaskTypeChoices(models.TextChoices):
