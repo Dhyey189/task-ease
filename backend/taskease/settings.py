@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'accounts',
     'tasks',
     'statuses',
+    'django_celery_results',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
@@ -178,3 +179,13 @@ GOOGLE_CLIENT_SECRET = env('GOOGLE_CLIENT_SECRET')
 
 FRONTEND_BASE_URL = env('FRONTEND_BASE_URL')
 BACKEND_BASE_URL = env('BACKEND_BASE_URL')
+
+# CELERY SETTINGS
+
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'ASia/Kolkata'
+
+CELERY_RESULT_BACKEND = 'django-db'
