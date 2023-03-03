@@ -11,14 +11,19 @@ const Button = ({
   text,
   borderRadius,
   width,
-  onClick
+  handleFunction,
 }) => {
   const { setIsClicked, initialState } = useStateContext();
-
+  const handleonClick = () => {
+    if(handleFunction)
+      handleFunction();
+    setIsClicked(initialState);
+  }
   return (
     <button
       type="button"
-      onClick={onClick}
+      onClick={handleonClick}
+
       style={{ backgroundColor: bgColor, color, borderRadius }}
       className={` text-${size} p-3 w-${width} hover:drop-shadow-xl hover:bg-${bgHoverColor}`}
     >

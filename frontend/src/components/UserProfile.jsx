@@ -51,7 +51,7 @@ const UserProfile = () => {
         <Button
           color="white"
           bgColor={currentColor}
-          onClick={handleLogout}
+          handleFunction={handleLogout}
           text="Logout"
           borderRadius="10px"
           width="full"
