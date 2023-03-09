@@ -29,7 +29,6 @@ class Task(models.Model):
     description = models.CharField(max_length=255)
     category = models.ForeignKey(Categories,null=True,on_delete=models.SET_NULL)
     priority = models.IntegerField(default=1)
-    # default scheduled for 10 min later than current.
     scheduled_at = models.DateTimeField(auto_now = True)
     task_type = models.CharField(max_length=50,choices=TaskTypeChoices.choices,default=TaskTypeChoices.ONETIME)
     created_at = models.DateTimeField(auto_now_add = True)

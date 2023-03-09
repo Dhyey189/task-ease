@@ -5,7 +5,7 @@ from tasks.models import Task,Categories
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ('id','name','description','created_at','updated_at')
+    list_display = ('id','name','description','scheduled_at','updated_at')
 
 
 @admin.register(Categories)
