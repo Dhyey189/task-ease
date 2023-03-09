@@ -12,7 +12,10 @@ from accounts.tasks import task_create_default_categories
 def create_default_categories(sender,instance,created,*args,**kwargs):
     if created:
         print("In signal", instance)
-        instance.username = str(instance.email)
+        if len(instance.username) < 1:
+            instance.username = str(instance.email)
+        if len(instance.email) < 1:
+            instance.email = instance.username + "@default.com"
         # create default categories for the user asyncronously using celery.
         instance.save()
         task_create_default_categories.delay(instance.id)
