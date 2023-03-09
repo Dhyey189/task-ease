@@ -1,21 +1,42 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { Link, NavLink } from "react-router-dom";
 import { SiShopware } from "react-icons/si";
 import { MdOutlineCancel } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
-
-import { links } from "../data/dummy";
 import { useStateContext } from "../contexts/ContextProvider";
+import getWithExipry from "../utils/GetWithExpiry"
+import { links} from "../data/dummy"
+import axios from "axios";
+import {FaPlus,FaTasks} from "react-icons/fa"
+import {HiOfficeBuilding,HiHome} from "react-icons/hi"
+import {BiCategory} from "react-icons/bi";
 
 const Sidebar = () => {
   const { currentColor, activeMenu, setActiveMenu, screenSize } =
     useStateContext();
 
+  const user = getWithExipry("user");
+  const [categories,setCategories] = useState();
   const handleCloseSideBar = () => {
     if (activeMenu !== undefined && screenSize <= 900) {
       setActiveMenu(false);
     }
   };
+  
+  useEffect(() => {
+    axios.get(`http://127.0.0.1:8000/task/category/${user.id}/`)
+    .then((response) => {
+        console.log(response.data);
+        response.data[0].icon = <HiOfficeBuilding/>
+        response.data[1].icon = <HiHome/>
+        response.data[5].icon = <BiCategory/>
+        setCategories(response.data);
+
+    })
+    .catch((error) => { 
+        console.log(error);
+    });
+  },[])
 
   const activeLink =
     "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg  text-white  text-md m-2";
@@ -46,6 +67,74 @@ const Sidebar = () => {
             </TooltipComponent>
           </div>
           <div className="mt-10 ">
+          <div key="Categories">
+                <p className="text-gray-400 dark:text-gray-400 m-3 mt-4 uppercase">
+                Categories
+                </p>
+                {categories && categories.map((category) => (
+                  <NavLink
+                    to={`/app/category/${category.name}`}
+                    key={category.name}
+                    onClick={handleCloseSideBar}
+                    style={({ isActive }) => ({
+                      backgroundColor: isActive ? currentColor : "",
+                    })}
+                    className={({ isActive }) =>
+                      isActive ? activeLink : normalLink
+                    }
+                  >
+                    <i className="text-xl">{category.icon}</i>
+                    <span className="capitalize ">{category.name}</span>
+                  </NavLink>
+                ))}
+                <NavLink
+                    to={`/app/new-category/`}
+                    key="new-category"
+                    onClick={handleCloseSideBar}
+                    style={({ isActive }) => ({
+                      backgroundColor: isActive ? currentColor : "",
+                    })}
+                    className={({ isActive }) =>
+                      isActive ? activeLink : normalLink
+                    }
+                  >
+                    <FaPlus/>
+                    <span className="capitalize ">Add New Category</span>
+                  </NavLink>
+            </div>  
+            <div key="Tasks">
+                <p className="text-gray-400 dark:text-gray-400 m-3 mt-4 uppercase">
+                Tasks
+                </p>
+                  <NavLink
+                    to={`/app/tasks`}
+                    key="tasks"
+                    onClick={handleCloseSideBar}
+                    style={({ isActive }) => ({
+                      backgroundColor: isActive ? currentColor : "",
+                    })}
+                    className={({ isActive }) =>
+                      isActive ? activeLink : normalLink
+                    }
+                  >
+                    <FaTasks/>
+                    <span className="capitalize ">Tasks</span>
+                  </NavLink>
+                  <NavLink
+                    to={`/app/new-task`}
+                    key="new-task"
+                    onClick={handleCloseSideBar}
+                    style={({ isActive }) => ({
+                      backgroundColor: isActive ? currentColor : "",
+                    })}
+                    className={({ isActive }) =>
+                      isActive ? activeLink : normalLink
+                    }
+                  >
+                    <FaPlus/>
+                    <span className="capitalize ">Add New Task</span>
+                  </NavLink>
+            </div>  
             {links.map((item) => (
               <div key={item.title}>
                 <p className="text-gray-400 dark:text-gray-400 m-3 mt-4 uppercase">
@@ -63,7 +152,6 @@ const Sidebar = () => {
                       isActive ? activeLink : normalLink
                     }
                   >
-                    {link.icon}
                     <span className="capitalize ">{link.name}</span>
                   </NavLink>
                 ))}
