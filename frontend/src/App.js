@@ -9,12 +9,11 @@ import MainApp from "./pages/MainApp.js";
 import getWithExpiry from "./utils/GetWithExpiry";
 
 function App() {
-
   return (
     <>
         <Routes>
           <Route path="/" element={<Header />} />
-          <Route path="/app/*" element={<MainApp />} />
+          <Route path="/app/*" element={ <MainApp />} />
           <Route path="/about" element={<Header />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />

@@ -469,9 +469,11 @@ export const employeesGrid = [
     textAlign: 'Center' },
 ];
 
+
+
 export const links = [
   {
-    title: 'Dashboard',
+    title: 'All tasks',
     links: [
       {
         name: 'ecommerce',
@@ -481,7 +483,7 @@ export const links = [
   },
 
   {
-    title: 'Pages',
+    title: 'Categories',
     links: [
       {
         name: 'orders',
@@ -871,12 +873,6 @@ export const userProfileData = [
 ];
 
 export const ordersGrid = [
-  {
-    headerText: 'Image',
-    template: gridOrderImage,
-    textAlign: 'Center',
-    width: '120',
-  },
   {
     field: 'OrderItems',
     headerText: 'Item',

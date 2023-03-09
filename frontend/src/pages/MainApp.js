@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route,useNavigate, Navigate } from "react-router-dom";
 import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { Navbar, Footer, Sidebar, ThemeSettings } from "../components";
 import "../styles/MainApp.css";
+import getWithExpiry from "../utils/GetWithExpiry";
 
 import { useStateContext } from "../contexts/ContextProvider";
 import {
@@ -25,6 +26,8 @@ import {
   Editor,
 } from "./";
 
+import NewTask from "./NewTask";
+
 const MainApp = () => {
   const {
     setCurrentColor,
@@ -35,8 +38,10 @@ const MainApp = () => {
     themeSettings,
     setThemeSettings,
   } = useStateContext();
-
+  const navigate = useNavigate();
+  const user = getWithExpiry("user");
   useEffect(() => {
+    console.log("In main app")
     const currentThemeColor = localStorage.getItem("colorMode");
     const currentThemeMode = localStorage.getItem("themeMode");
     if (currentThemeColor && currentThemeMode) {
@@ -47,6 +52,10 @@ const MainApp = () => {
 
   return (
     <div className={currentMode === "Dark" ? "dark" : ""}>
+      {
+        !user && (<Navigate to="/" replace={true} />)
+
+      }
       <div className="flex relative dark:bg-main-dark-bg">
         <div className="fixed right-4 bottom-4" style={{ zIndex: "1000" }}>
           <TooltipComponent content="Settings" position="Top">
@@ -89,7 +98,7 @@ const MainApp = () => {
           <Route path="/orders" element={<Orders />} />
           <Route path="/employees" element={<Employees />} />
           <Route path="/customers" element={<Customers />} />
-
+          <Route path="/new-task" element={<NewTask/>} />
           {/* apps  */}
           <Route path="/kanban" element={<Kanban />} />
           <Route path="/editor" element={<Editor />} />
