@@ -12,27 +12,28 @@ class TasksViewset(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
 
-    # return list of all task created by user
-    def retrieve(self, request, pk=None):
-        user = get_object_or_404(User,id = pk)
-        tasks = self.queryset.filter(user = user)
-        serializer = self.serializer_class(tasks,many = True)
-        return Response(serializer.data,status=200)
     
-
 class CategoryViewset(viewsets.ModelViewSet):
     queryset = Categories.objects.all()
     serializer_class = CategorySerializer
 
-    # return list of all categories created by user
-    def retrieve(self, request, pk=None):
-        user = get_object_or_404(User,id = pk)
-        tasks = self.queryset.filter(user = user)
-        serializer = self.serializer_class(tasks,many = True)
-        return Response(serializer.data,status=200)
+# return list of all task created by user
+@api_view(['GET'])
+def get_tasks_list(request, pk = None):
+    user = get_object_or_404(User,id = pk)
+    tasks = Task.objects.filter(user = user)
+    serializer = TaskSerializer(tasks,many = True)
+    return Response(serializer.data,status=200)
+    
 
-# @api_view
-# def list_all_categories(request):
 
+
+# return list of all categories created by user
+@api_view(['GET'])
+def get_categories_list(request, pk = None):
+    user = get_object_or_404(User,id = pk)
+    tasks = Categories.objects.filter(user = user)
+    serializer = CategorySerializer(tasks,many = True)
+    return Response(serializer.data,status=200)
 
 
