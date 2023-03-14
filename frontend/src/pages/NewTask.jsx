@@ -31,7 +31,7 @@ const NewTask = () => {
   const [tasktype,setTaskType] = useState(null);
   useEffect(() => {
     axios
-      .get(`http://127.0.0.1:8000/task/category/${user.id}/`)
+      .get(`http://127.0.0.1:8000/task/categories-list/${user.id}/`)
       .then((response) => {
         console.log(response.data);
 
@@ -42,6 +42,15 @@ const NewTask = () => {
       });
   }, []);
   const createTask = () => {
+    // let category_obj = categories[0];
+    // for (let i = 0; i < categories.length ; i++) {
+    //   if (taskcategory === categories[i].id) {
+    //     category_obj = categories[i];
+    //     break;
+    //   }
+    // }
+    // console.log("category:",category_obj)
+    console.log("taskcategory",taskcategory)
     const task = {
       "name" : taskname,
       "description" : taskdescription,
@@ -50,10 +59,10 @@ const NewTask = () => {
       "user" : user.id,
     }
     axios
-      .post(`http://127.0.0.1:8000/task/`,task)
+      .post(`http://127.0.0.1:8000/task/task/`,task)
       .then((response) => {
         console.log(response.data);
-        navigate('/app/')
+        navigate('/app/tasks')
       })
       .catch((error) => {
         console.log(error);

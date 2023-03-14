@@ -24,12 +24,12 @@ const Sidebar = () => {
   };
   
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/task/category/${user.id}/`)
+    axios.get(`http://127.0.0.1:8000/task/categories-list/${user.id}/`)
     .then((response) => {
         console.log(response.data);
         response.data[0].icon = <HiOfficeBuilding/>
         response.data[1].icon = <HiHome/>
-        response.data[5].icon = <BiCategory/>
+        response.data[2].icon = <BiCategory/>
         setCategories(response.data);
 
     })

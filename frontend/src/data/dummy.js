@@ -472,92 +472,92 @@ export const employeesGrid = [
 
 
 export const links = [
-  {
-    title: 'All tasks',
-    links: [
-      {
-        name: 'ecommerce',
-        icon: <FiShoppingBag />,
-      },
-    ],
-  },
+  // {
+  //   title: 'All tasks',
+  //   links: [
+  //     {
+  //       name: 'ecommerce',
+  //       icon: <FiShoppingBag />,
+  //     },
+  //   ],
+  // },
 
-  {
-    title: 'Categories',
-    links: [
-      {
-        name: 'orders',
-        icon: <AiOutlineShoppingCart />,
-      },
-      {
-        name: 'employees',
-        icon: <IoMdContacts />,
-      },
-      {
-        name: 'customers',
-        icon: <RiContactsLine />,
-      },
-    ],
-  },
-  {
-    title: 'Apps',
-    links: [
-      {
-        name: 'calendar',
-        icon: <AiOutlineCalendar />,
-      },
-      {
-        name: 'kanban',
-        icon: <BsKanban />,
-      },
-      {
-        name: 'editor',
-        icon: <FiEdit />,
-      },
-      {
-        name: 'color-picker',
-        icon: <BiColorFill />,
-      },
-    ],
-  },
-  {
-    title: 'Charts',
-    links: [
-      {
-        name: 'line',
-        icon: <AiOutlineStock />,
-      },
-      {
-        name: 'area',
-        icon: <AiOutlineAreaChart />,
-      },
+  // {
+  //   title: 'Categories',
+  //   links: [
+  //     {
+  //       name: 'orders',
+  //       icon: <AiOutlineShoppingCart />,
+  //     },
+  //     {
+  //       name: 'employees',
+  //       icon: <IoMdContacts />,
+  //     },
+  //     {
+  //       name: 'customers',
+  //       icon: <RiContactsLine />,
+  //     },
+  //   ],
+  // },
+  // {
+  //   title: 'Apps',
+  //   links: [
+  //     {
+  //       name: 'calendar',
+  //       icon: <AiOutlineCalendar />,
+  //     },
+  //     {
+  //       name: 'kanban',
+  //       icon: <BsKanban />,
+  //     },
+  //     {
+  //       name: 'editor',
+  //       icon: <FiEdit />,
+  //     },
+  //     {
+  //       name: 'color-picker',
+  //       icon: <BiColorFill />,
+  //     },
+  //   ],
+  // },
+  // {
+  //   title: 'Charts',
+  //   links: [
+  //     {
+  //       name: 'line',
+  //       icon: <AiOutlineStock />,
+  //     },
+  //     {
+  //       name: 'area',
+  //       icon: <AiOutlineAreaChart />,
+  //     },
 
-      {
-        name: 'bar',
-        icon: <AiOutlineBarChart />,
-      },
-      {
-        name: 'pie',
-        icon: <FiPieChart />,
-      },
-      {
-        name: 'financial',
-        icon: <RiStockLine />,
-      },
-      {
-        name: 'color-mapping',
-        icon: <BsBarChart />,
-      },
-      {
-        name: 'pyramid',
-        icon: <GiLouvrePyramid />,
-      },
-      {
-        name: 'stacked',
-        icon: <AiOutlineBarChart />,
-      },
-    ],
-  },
+  //     {
+  //       name: 'bar',
+  //       icon: <AiOutlineBarChart />,
+  //     },
+  //     {
+  //       name: 'pie',
+  //       icon: <FiPieChart />,
+  //     },
+  //     {
+  //       name: 'financial',
+  //       icon: <RiStockLine />,
+  //     },
+  //     {
+  //       name: 'color-mapping',
+  //       icon: <BsBarChart />,
+  //     },
+  //     {
+  //       name: 'pyramid',
+  //       icon: <GiLouvrePyramid />,
+  //     },
+  //     {
+  //       name: 'stacked',
+  //       icon: <AiOutlineBarChart />,
+  //     },
+  //   ],
+  // },
 ];
 
 export const cartData = [
@@ -874,42 +874,39 @@ export const userProfileData = [
 
 export const ordersGrid = [
   {
-    field: 'OrderItems',
-    headerText: 'Item',
+    field: 'name',
+    headerText: 'title',
     width: '150',
     editType: 'dropdownedit',
     textAlign: 'Center',
   },
-  { field: 'CustomerName',
-    headerText: 'Customer Name',
-    width: '150',
+  { field: 'description',
+    headerText: 'description',
+    width: '400',
     textAlign: 'Center',
   },
   {
-    field: 'TotalAmount',
-    headerText: 'Total Amount',
-    format: 'C2',
-    textAlign: 'Center',
-    editType: 'numericedit',
+    field: 'category',
+    headerText: 'category',
     width: '150',
   },
+  // {
+  //   headerText: 'Status',
+  //   template: gridOrderStatus,
+  //   field: 'OrderItems',
+  //   textAlign: 'Center',
+  //   width: '120',
+  // },
   {
-    headerText: 'Status',
-    template: gridOrderStatus,
-    field: 'OrderItems',
-    textAlign: 'Center',
-    width: '120',
-  },
-  {
-    field: 'OrderID',
-    headerText: 'Order ID',
-    width: '120',
+    field: 'task_type',
+    headerText: 'task type',
+    width: '100',
     textAlign: 'Center',
   },
 
   {
-    field: 'Location',
-    headerText: 'Location',
+    field: 'scheduled_at',
+    headerText: 'scheduled at',
     width: '150',
     textAlign: 'Center',
   },

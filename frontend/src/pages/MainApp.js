@@ -9,7 +9,7 @@ import getWithExpiry from "../utils/GetWithExpiry";
 import { useStateContext } from "../contexts/ContextProvider";
 import {
   Ecommerce,
-  Orders,
+  Task,
   Calendar,
   Employees,
   Stacked,
@@ -27,6 +27,8 @@ import {
 } from "./";
 
 import NewTask from "./NewTask";
+import NewCategory from "./NewCategory";
+import Tasks from "./Tasks"
 
 const MainApp = () => {
   const {
@@ -95,10 +97,11 @@ const MainApp = () => {
           <Route path="/ecommerce" element={<Ecommerce />} />
 
           {/* pages  */}
-          <Route path="/orders" element={<Orders />} />
+          <Route path="/tasks" element={<Tasks />} />
           <Route path="/employees" element={<Employees />} />
           <Route path="/customers" element={<Customers />} />
           <Route path="/new-task" element={<NewTask/>} />
+          <Route path="/new-category" element={<NewCategory/>} />
           {/* apps  */}
           <Route path="/kanban" element={<Kanban />} />
           <Route path="/editor" element={<Editor />} />
