@@ -31,5 +31,6 @@ class Task(models.Model):
     priority = models.IntegerField(default=1)
     scheduled_at = models.DateTimeField(auto_now = True)
     task_type = models.CharField(max_length=50,choices=TaskTypeChoices.choices,default=TaskTypeChoices.ONETIME)
+    current_status = models.ForeignKey("statuses.Status",null = True, on_delete=models.CASCADE, default = 1)
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)

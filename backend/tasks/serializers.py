@@ -10,11 +10,11 @@ class CategorySerializer(serializers.ModelSerializer):
 class TaskSerializer(serializers.ModelSerializer):
     category_obj = serializers.SerializerMethodField(read_only = True)
     scheduled_at = serializers.SerializerMethodField()
-
+    current_status = serializers.SerializerMethodField()
 
     class Meta:
         model = Task
-        fields = ['id','user','name','category','description','category_obj','task_type','priority','scheduled_at']
+        fields = ['id','user','name','category','description','current_status','category_obj','task_type','priority','scheduled_at']
     
     def get_category_obj(self, obj):
         category_obj = Categories.objects.get(id = obj.category.id)
@@ -23,5 +23,8 @@ class TaskSerializer(serializers.ModelSerializer):
     def get_scheduled_at(self, obj):
         date = obj.scheduled_at.strftime("%-d, %b, %Y ,%-I:%S %p")
         return date
+    
+    def get_current_status(self, obj):
+        return obj.current_status.name
     
     
