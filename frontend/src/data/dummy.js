@@ -33,13 +33,28 @@ export const gridOrderImage = (props) => (
   </div>
 );
 
+const get_current_status_color = (current_status) => {
+  if (current_status == "open") {
+    return "yellow";
+  }
+  else if (current_status == "due") {
+    return "red";
+  }
+  else if (current_status == "accomplished") {
+    return "green";
+  }
+  else if (current_status == "archive") {
+    return "lightGrey";
+  }
+}
+
 export const gridOrderStatus = (props) => (
   <button
     type="button"
-    style={{ background: props.StatusBg }}
-    className="text-white py-1 px-2 capitalize rounded-2xl text-md"
+    style={{ background: get_current_status_color(props.current_status) }}
+    className="text-dark py-1 px-2 capitalize rounded-2xl text-md"
   >
-    {props.Status}
+    {props.current_status}
   </button>
 );
 
@@ -876,31 +891,31 @@ export const ordersGrid = [
   {
     field: 'name',
     headerText: 'title',
-    width: '150',
-    editType: 'dropdownedit',
+    width: '80',
     textAlign: 'Center',
   },
-  { field: 'description',
-    headerText: 'description',
-    width: '400',
-    textAlign: 'Center',
-  },
+  // { field: 'description',
+  //   headerText: 'description',
+  //   width: '300',
+  //   textAlign: 'Center',
+  // },
   {
     field: 'category',
     headerText: 'category',
-    width: '150',
+    width: '80',
+    textAlign: 'Center',
   },
-  // {
-  //   headerText: 'Status',
-  //   template: gridOrderStatus,
-  //   field: 'OrderItems',
-  //   textAlign: 'Center',
-  //   width: '120',
-  // },
+  {
+    headerText: 'current_status',
+    template: gridOrderStatus,
+    field: 'status',
+    textAlign: 'Center',
+    width: '80',
+  },
   {
     field: 'task_type',
     headerText: 'task type',
-    width: '100',
+    width: '80',
     textAlign: 'Center',
   },
 
