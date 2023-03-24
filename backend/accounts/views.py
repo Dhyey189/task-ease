@@ -50,18 +50,21 @@ def google_get_user_info(*, access_token):
 
 
 def login_or_signup_user(user_data):
+    is_from_login = user_data.pop("is_from_login")
     try:
         user = User.objects.get(email = user_data['email'])
     except User.DoesNotExist:
         serializer = UserSerializer(data = user_data)
-        if serializer.is_valid():
+        if serializer.is_valid() and not is_from_login:
             user = serializer.save()
             print(user)
             user_data = {"id" : user.id, "name" : user.name, "email" : user.email, "picture" : user.picture, "phone_number" : user.phone_number}
             return user_data
+        elif is_from_login:
+            raise ValidationError("user not found!")
         else:
             raise ValidationError(serializer.errors)
-    finally:
+    else:
         serializer = UserSerializer(instance = user,data = user_data)
         if serializer.is_valid():
             user = serializer.save()
@@ -87,7 +90,11 @@ class GoogleLoginApi(APIView):
         code = validated_data.get('code')
         error = validated_data.get('error')
         login_url = f'{settings.FRONTEND_BASE_URL}login'
+        is_from_login = False
 
+        if request.GET.get("from", "signup") == "login":
+            is_from_login = True
+        
         if error or not code:
             params = urlencode({'error': error})
             return redirect(f'{login_url}?{params}')
@@ -95,20 +102,27 @@ class GoogleLoginApi(APIView):
         domain = "http://localhost:3000"
         api_uri = request.GET.get('from','')
         redirect_uri = f'{domain}/{api_uri}/'
+        try:
+            access_token = google_get_access_token(code=code, redirect_uri=redirect_uri)
 
-        access_token = google_get_access_token(code=code, redirect_uri=redirect_uri)
-
-        user_data = google_get_user_info(access_token=access_token)
-
-        user_data = {
-            'email': user_data['email'],
-            'name': user_data.get('name',''),
-            'phone_number': user_data.get('phone_number',''),
-            'picture' : user_data.get('picture','')
-        }
-        
-
-        return Response(login_or_signup_user(user_data), status=status.HTTP_201_CREATED)
+            user_data = google_get_user_info(access_token=access_token)
+        except ValidationError as e:
+            return Response(e,status=400)
+        else:
+            user_data = {
+                'email': user_data['email'],
+                'name': user_data.get('name',''),
+                'phone_number': user_data.get('phone_number',''),
+                'picture' : user_data.get('picture',''),
+                'is_from_login' : is_from_login
+            }
+            
+            try:
+                res = Response(login_or_signup_user(user_data), status=status.HTTP_201_CREATED)
+            except ValidationError as e:
+                return Response(e,status=400)
+            else:
+                return res 
     
 
 

@@ -271,9 +271,52 @@ export const barChartData = [
     { x: 'GBR', y: 17 },
     { x: 'CHN', y: 26 },
   ],
+  
 ];
 
 export const barCustomSeries = [
+  {
+    dataSource: barChartData[0],
+    xName: 'x',
+    yName: 'y',
+    name: 'Gold',
+    type: 'Column',
+    marker: {
+      dataLabel: {
+        visible: true,
+        position: 'Top',
+        font: { fontWeight: '600', color: '#ffffff' },
+      },
+    },
+  },
+  {
+    dataSource: barChartData[1],
+    xName: 'x',
+    yName: 'y',
+    name: 'Silver',
+    type: 'Column',
+    marker: {
+      dataLabel: {
+        visible: true,
+        position: 'Top',
+        font: { fontWeight: '600', color: '#ffffff' },
+      },
+    },
+  },
+  {
+    dataSource: barChartData[2],
+    xName: 'x',
+    yName: 'y',
+    name: 'Bronze',
+    type: 'Column',
+    marker: {
+      dataLabel: {
+        visible: true,
+        position: 'Top',
+        font: { fontWeight: '600', color: '#ffffff' },
+      },
+    },
+  },
   {
     dataSource: barChartData[0],
     xName: 'x',

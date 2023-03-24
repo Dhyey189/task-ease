@@ -113,3 +113,46 @@ def set_user_goal(request, user_id = None, goal = None):
     user_goal.tasks_todo = goal
     user_goal.save()
     return Response(UserGoalSerializer(user_goal).data, status=201)
+
+def get_last_six_months():
+    now = datetime.now()
+    result = [now.strftime("%B %Y")]
+    for _ in range(0, 6):
+        now = now.replace(day=1) - timedelta(days=1)
+        result.append(now.strftime("%B %Y"))
+    result.reverse()
+    return result
+
+@api_view(["GET"])
+@transaction.atomic
+def get_analysis_data(request, user_id):
+    user = User.objects.get(id = user_id)
+    last_six_months = get_last_six_months()
+    statuses = ["open", "accomplished", "due" ,"archive"] 
+    analysis_data = []
+    for status in statuses:
+        # {"x" month_year , "y" : count}
+        number_of_task = []
+        for month_year in last_six_months:
+            column = {}
+            column["x"] = month_year
+            month_datetime = datetime.strptime(month_year,'%B %Y')
+            column["y"] = TaskStatus.objects.filter(task__user = user,status = Status.objects.get(name = status), created_at__month = month_datetime.month).count()
+            number_of_task.append(column)
+        status_data = {
+            "dataSource": number_of_task,
+            "xName": 'x',
+            "yName": 'y',
+            "name": status,
+            "type": 'Column',
+            "marker": {
+                "dataLabel": {
+                    "visible": "true",
+                    "position": 'Top',
+                    "font": { "fontWeight": '600', "color": '#ffffff' },
+                },
+            },
+        }
+        analysis_data.append(status_data)
+        print(analysis_data)
+    return Response(analysis_data,200)

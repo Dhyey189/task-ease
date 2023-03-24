@@ -81,10 +81,12 @@ const Tasks = () => {
     var is_disabled = props.current_status === 'open' ? false : true;
     var delete_button_style = props.current_status === 'open' ? "text-black" : "text-gray-300";
     var done_button_style = props.current_status === 'open' ? "text-black" : (props.current_status === 'accomplished' ? "text-green-500" : "text-gray-400")
+    var title_mark = props.current_status === 'open' ? `Mark task '${props.name}' as Completed.` : `Task '${props.name}' is not open.`
+    var titla_delete = props.current_status === 'open' ? `Soft Delete task '${props.name}'.` : `Task '${props.name}' is not open.`
     return (
       <div className="flex justify-evenly">
-        <button type="button" title={`Mark task '${props.name}' as Completed.`} onClick={() => handleCompleteTask(props)} className={done_button_style} disabled={is_disabled}><BsCheckCircle className="w-5 h-5"/></button>
-        <button type="button" title={`Soft Delete task '${props.name}'.`}  onClick={() => handleSoftDeleteTask(props)} className={delete_button_style} disabled={is_disabled}><MdDelete className="w-6 h-6"/></button>
+        <button type="button" title={title_mark} onClick={() => handleCompleteTask(props)} className={done_button_style} disabled={is_disabled}><BsCheckCircle className="w-5 h-5"/></button>
+        <button type="button" title={titla_delete}  onClick={() => handleSoftDeleteTask(props)} className={delete_button_style} disabled={is_disabled}><MdDelete className="w-6 h-6"/></button>
       </div>
       );
   };

@@ -11,6 +11,7 @@ import getWithExpiry from "../utils/GetWithExpiry";
 function Login() {
   const navigate = useNavigate();
   const [queryParameters] = useSearchParams();
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (getWithExpiry("user")) {
@@ -26,7 +27,10 @@ function Login() {
           storeUser(response.data);
           navigate("/");
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          console.log(error.response);
+          alert(error.response.data)
+        });
     } else if (queryParameters.get("error")) {
       console.log(queryParameters.get("error"));
     }
@@ -71,6 +75,7 @@ function Login() {
           </i>
           Login with Google
         </button>
+        <span>{<p>failed error:-</p> && error}</span>
         <p className="have-account">
           No account?{" "}
           <Link className="remove-link-decoration " to="/signup">

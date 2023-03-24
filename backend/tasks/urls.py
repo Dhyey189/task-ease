@@ -8,7 +8,8 @@ from tasks.views import (
     soft_delete_task,
     mark_task_as_completed,
     get_user_goal,
-    set_user_goal
+    set_user_goal,
+    get_analysis_data
 )
 
 router = routers.DefaultRouter()
@@ -38,6 +39,11 @@ urlpatterns = [
         set_user_goal,
         name="set-user-goal"
     ),
+    path(
+        "get-analysis-data/<int:user_id>/",
+        get_analysis_data,
+        name = "get-analysis-data"
+    )
 ]
 
 urlpatterns += router.urls

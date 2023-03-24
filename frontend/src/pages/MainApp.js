@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route,useNavigate, Navigate } from "react-router-dom";
 import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
@@ -42,8 +42,10 @@ const MainApp = () => {
   } = useStateContext();
   const navigate = useNavigate();
   const user = getWithExpiry("user");
+  const [wait,setWait] = useState(null);
   useEffect(() => {
     console.log("In main app")
+
     const currentThemeColor = localStorage.getItem("colorMode");
     const currentThemeMode = localStorage.getItem("themeMode");
     if (currentThemeColor && currentThemeMode) {
@@ -54,10 +56,6 @@ const MainApp = () => {
 
   return (
     <div className={currentMode === "Dark" ? "dark" : ""}>
-      {
-        !user && (<Navigate to="/" replace={true} />)
-
-      }
       <div className="flex relative dark:bg-main-dark-bg">
         <div className="fixed right-4 bottom-4" style={{ zIndex: "1000" }}>
           <TooltipComponent content="Settings" position="Top">

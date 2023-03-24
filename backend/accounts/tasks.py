@@ -38,7 +38,7 @@ def task_send_user_onboarding_mail(user_id):
 def task_send_remainders_before_twelve_hours():
     query_set = Task.objects.all()
     twelve_hours_after_datetime = datetime.now() + timedelta(hours = 12)
-    query_set = query_set.filter(scheduled_at__range = (datetime.now(),twelve_hours_after_datetime), current_status = Status.objects.get(name = 'open'), is_sent_remainder_12_hour = False)
+    query_set = query_set.filter(scheduled_at__range = (datetime.now()+timedelta(hours = 4),twelve_hours_after_datetime), current_status = Status.objects.get(name = 'open'), is_sent_remainder_12_hour = False)
     for task in query_set:
         send_mail("Remainder: For your task", f"Hello, {task.user.name}\n\n\tYour task needs some action, less than 12 hours left before its schedule. If completed then ignore the mail and also mark it as completed on TaskEase app.Thank you for using TaskEase.\n\n\tBelow are some details related to incomplete task:-\n\t\tTask Name:-{task.name}\n\t\tTask Description:-{task.description}\n\t\tTask Category:- {task.category.name}\n\nThanks & Regards,\nTeam TaskEase","taskeaseapp@gmail.com",[task.user.email])
         task.is_sent_remainder_12_hour = True

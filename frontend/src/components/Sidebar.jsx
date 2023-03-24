@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { SiShopware } from "react-icons/si";
 import { MdOutlineCancel } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
@@ -15,7 +15,7 @@ import {BsFillBarChartLineFill} from "react-icons/bs"
 const Sidebar = () => {
   const { currentColor, activeMenu, setActiveMenu, screenSize } =
     useStateContext();
-
+  const navigate = useNavigate();
   const user = getWithExipry("user");
   const [categories,setCategories] = useState();
   const handleCloseSideBar = () => {
@@ -25,6 +25,9 @@ const Sidebar = () => {
   };
   
   useEffect(() => {
+    if (!user) {
+      navigate("/");
+    }
     axios.get(`http://127.0.0.1:8000/task/categories-list/${user.id}/`)
     .then((response) => {
         console.log(response.data);

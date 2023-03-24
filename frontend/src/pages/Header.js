@@ -12,11 +12,10 @@ import mainpageimg from "/home/dhyey/Myprojects/task-ease/frontend/src/pages/tas
 import {Button} from "../components/"
 const Header = () => {
   const user = getWithExpiry("user");
-  const [sidebar, setSidebar] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
-    if (getWithExpiry("user")) {
-      navigate("/app");
+    if (user) {
+      navigate("/app/");
     }
   }, []);
 
@@ -30,6 +29,7 @@ const Header = () => {
 
   return (
     <>
+      
       <div className="flex justify-around h-1/5 m-5 text-2xl">
         <div className="flex justify-left w-1/5">
           <div>
