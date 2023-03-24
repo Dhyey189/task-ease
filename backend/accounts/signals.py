@@ -1,7 +1,7 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from accounts.models import User
-from accounts.tasks import task_create_default_categories
+from accounts.tasks import task_create_default_categories, task_send_user_onboarding_mail
 
 # @receiver(pre_save, sender = User)
 # def create_username(sender,instance,*args,**kwargs):
@@ -19,3 +19,4 @@ def create_default_categories(sender,instance,created,*args,**kwargs):
         # create default categories for the user asyncronously using celery.
         instance.save()
         task_create_default_categories.delay(instance.id)
+        task_send_user_onboarding_mail.delay(instance.id)

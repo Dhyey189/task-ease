@@ -1,14 +1,47 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { MdOutlineCancel } from "react-icons/md";
 import { BsCheck } from "react-icons/bs";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
-
+import { NumericTextBoxComponent } from "@syncfusion/ej2-react-inputs";
 import { themeColors } from "../data/dummy";
 import { useStateContext } from "../contexts/ContextProvider";
+import axios from "axios";
+import getWithExpiry from "../utils/GetWithExpiry";
 
 const ThemeSettings = () => {
   const { setColor, setMode, currentMode, currentColor, setThemeSettings } =
     useStateContext();
+  const user = getWithExpiry("user");
+  const [goal, setGoal] = useState(null);
+  const [taskDoneToday, setTaskDoneToday] = useState(null);
+
+  useEffect(() => {
+    axios
+      .get(`http://127.0.0.1:8000/task/get-user-goal/${user.id}/`)
+      .then((response) => {
+        console.log(response.data);
+        setGoal(response.data.tasks_todo);
+        setTaskDoneToday(response.data.tasks_done);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  const changeGoal = (newGoalValue) => {
+    axios
+      .post(
+        `http://127.0.0.1:8000/task/set-user-goal/${user.id}/${newGoalValue}/`
+      )
+      .then((response) => {
+        console.log(response.data);
+        setGoal(response.data.tasks_todo);
+        setTaskDoneToday(response.data.tasks_done);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <div className="bg-half-transparent w-screen fixed nav-item top-0 right-0">
@@ -24,6 +57,24 @@ const ThemeSettings = () => {
             <MdOutlineCancel />
           </button>
         </div>
+        {goal && (
+          <div className="flex-col border-t-1 border-color p-4 ml-4">
+              <p className="font-semibold text-xl ">Daily Goal. ({taskDoneToday}/{goal} task completed)</p>
+
+            <div className="mt-4 dark:text-white">
+              <NumericTextBoxComponent
+                format="n3"
+                decimals={0}
+                value={goal}
+                min={3}
+                validateDecimalOnType={true}
+                change={(e) => {
+                  changeGoal(e.value);
+                }}
+              />
+            </div>
+          </div>
+        )}
         <div className="flex-col border-t-1 border-color p-4 ml-4">
           <p className="font-semibold text-xl ">Theme Option</p>
 

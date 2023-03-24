@@ -29,12 +29,22 @@ const NewTask = () => {
   const [taskdescription,setTaskDescription] = useState(null);
   const [taskcategory,setTaskCategory] = useState(null);
   const [tasktype,setTaskType] = useState(null);
+  const [taskScheduledAt,setTaskScheduledAt] = useState(null);
+  let validationClass = {
+    "title" : "e-success",
+    "description" : "e-success",
+    "category" : "e-success",
+    "task-type" : "e-success"
+  }
+  const [isValid, setIsValid ] = useState(false);
+  const currentDate = new Date()
+  
   useEffect(() => {
     axios
-      .get(`http://127.0.0.1:8000/task/categories-list/${user.id}/`)
+    .get(`http://127.0.0.1:8000/task/categories-list/${user.id}/`)
       .then((response) => {
         console.log(response.data);
-
+        
         setCategories(response.data);
       })
       .catch((error) => {
@@ -42,20 +52,17 @@ const NewTask = () => {
       });
   }, []);
   const createTask = () => {
-    // let category_obj = categories[0];
-    // for (let i = 0; i < categories.length ; i++) {
-    //   if (taskcategory === categories[i].id) {
-    //     category_obj = categories[i];
-    //     break;
-    //   }
-    // }
-    // console.log("category:",category_obj)
-    console.log("taskcategory",taskcategory)
+    if (!validated()) {
+      console.log("Validation error");
+      return;
+    }
+    console.log(taskScheduledAt.toString())
     const task = {
       "name" : taskname,
       "description" : taskdescription,
       "category" : taskcategory,
       "task_type" : tasktype,
+      "scheduled_at" : taskScheduledAt.toString(),
       "user" : user.id,
     }
     axios
@@ -68,6 +75,40 @@ const NewTask = () => {
         console.log(error);
       });
   }
+
+  const validated = () => {
+    var cnt = 0;
+    if (taskname) {
+      validationClass["title"] = "e-success"
+      cnt++;
+    }
+    else{
+      validationClass["title"] = "e-error"
+    }
+    if (taskdescription) {
+      validationClass["description"] = "e-success"
+      cnt++;
+    }
+    else{
+      validationClass["description"] = "e-error"
+    }
+    if (taskcategory) {
+      validationClass["category"] = "e-success"
+      cnt++;
+    }
+    else{
+      validationClass["category"] = "e-error"
+    }
+    if (tasktype) {
+      validationClass["task-type"] = "e-success"
+      cnt++;
+    }
+    else{
+      validationClass["task-type"] = "e-error"
+    }
+    return cnt>=4;
+  }
+
   return (
     <div className="flex-col flex items-center dark:text-white text-2xl">
       <div className="w-3/6 ">
@@ -77,7 +118,11 @@ const NewTask = () => {
       </div>
       <div className="w-3/6 mt-6 pb-4">
         <div className="">
-          <TextBoxComponent placeholder="Title" change={(e) => setTaskName(e.value)} floatLabelType="Auto" />
+          <TextBoxComponent placeholder="Title" cssClass={validationClass["title"]} change={(e) => {
+            validated();
+            setTaskName(e.value);
+            }} 
+            floatLabelType="Auto" />
         </div>
       </div>
       <div className="w-3/6 mt-6 pb-4">
@@ -86,7 +131,11 @@ const NewTask = () => {
             multiline={true}
             floatLabelType="Auto"
             placeholder="Description"
-            change={(e) => setTaskDescription(e.value)}
+            change={(e) => {
+              validated();
+              setTaskDescription(e.value);
+            }}
+            cssClass={validationClass["description"]}
           ></TextBoxComponent>
         </div>
       </div>
@@ -96,12 +145,16 @@ const NewTask = () => {
             <DropDownListComponent
               id="name"
               fields={{ text: "name", value: "id" }}
-              change={(e) => setTaskCategory(e.value)}
+              change={(e) => {
+                validated();
+                setTaskCategory(e.value)
+              }}
               style={{
                 border: "none",
                 color: currentMode === "Dark" && "white",
                 
               }}
+              cssClass={validationClass["category"]}
               dataSource={categories}
               placeholder="Choose a category"
               popupHeight="220px"
@@ -113,12 +166,15 @@ const NewTask = () => {
             <DropDownListComponent
               id="name"
               fields={{ text: "type", value: "id" }}
-              change={(e) => setTaskType(e.value)}
+              change={(e) => {
+                validated();
+                setTaskType(e.value);
+              }}
               style={{
-                border: "none",
                 color: currentMode === "Dark" && "white",
               }}
               dataSource={task_type}
+              cssClass={`${validationClass["task-type"]} border-2`}
               placeholder="Choose type of task"
               popupHeight="220px"
             />
@@ -128,7 +184,14 @@ const NewTask = () => {
       <div className="w-3/6 mt-6 pb-4 flex justify-evenly">
         <p className="p-2 text-2xl text-gray-600">Scheduled at:</p>
         <div>
-        <DateTimePickerComponent placeholder="Select a date & time"></DateTimePickerComponent>
+        <DateTimePickerComponent 
+        placeholder="Select a date & time" 
+        change={(e) => {
+          validated();
+          setTaskScheduledAt(e.value);
+        }}
+        min={currentDate}
+        ></DateTimePickerComponent>
         </div>
       </div>
       <div>

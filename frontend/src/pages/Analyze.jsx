@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   ChartComponent,
   SeriesCollectionDirective,
@@ -15,16 +15,28 @@ import {
   barCustomSeries,
   barPrimaryXAxis,
   barPrimaryYAxis,
-} from "../../data/dummy";
-import { ChartsHeader } from "../../components";
-import { useStateContext } from "../../contexts/ContextProvider";
+} from "../data/dummy";
+import { ChartsHeader } from "../components";
+import { useStateContext } from "../contexts/ContextProvider";
+import getWithExpiry from "../utils/GetWithExpiry";
 
-const Bar = () => {
+const Analyze = () => {
   const { currentMode } = useStateContext();
+  const user = getWithExpiry("user");
+
+  useEffect(() => {
+    axios.get(`http://127.0.0.1:8000/task/get-analysis-data/${user.id}/`)
+    .then((response) => {
+
+    })
+    .catch((error) => {
+      
+    })
+  },[])
 
   return (
     <div className="m-4 md:m-10 mt-24 p-10 bg-white dark:bg-secondary-dark-bg rounded-3xl">
-      <ChartsHeader category="Bar" title="Olympic Medal Counts - RIO" />
+      <ChartsHeader category="Productivity" title="Task counts according to its status for last 6 months" />
       <div className=" w-full">
         <ChartComponent
           id="charts"
@@ -50,4 +62,4 @@ const Bar = () => {
   );
 };
 
-export default Bar;
+export default Analyze;

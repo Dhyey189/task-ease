@@ -11,3 +11,11 @@ class User(AbstractUser):
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
     REQUIRED_FIELDS = []
+
+class UserGoal(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    tasks_todo = models.IntegerField(default=3)
+    tasks_done = models.IntegerField(default=0)
+    total_tasks_done = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add = True)
+    updated_at = models.DateTimeField(auto_now = True)

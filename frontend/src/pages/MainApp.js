@@ -18,7 +18,7 @@ import {
   Kanban,
   Line,
   Area,
-  Bar,
+  Analyze,
   Pie,
   Financial,
   ColorPicker,
@@ -102,6 +102,7 @@ const MainApp = () => {
           <Route path="/customers" element={<Customers />} />
           <Route path="/new-task" element={<NewTask/>} />
           <Route path="/new-category" element={<NewCategory/>} />
+          <Route path="/analyze" element={<Analyze />} />
           {/* apps  */}
           <Route path="/kanban" element={<Kanban />} />
           <Route path="/editor" element={<Editor />} />
@@ -111,7 +112,6 @@ const MainApp = () => {
           {/* charts  */}
           <Route path="/line" element={<Line />} />
           <Route path="/area" element={<Area />} />
-          <Route path="/bar" element={<Bar />} />
           <Route path="/pie" element={<Pie />} />
           <Route path="/financial" element={<Financial />} />
           <Route path="/color-mapping" element={<ColorMapping />} />

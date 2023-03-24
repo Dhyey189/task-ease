@@ -38,10 +38,10 @@ const get_current_status_color = (current_status) => {
     return "yellow";
   }
   else if (current_status == "due") {
-    return "red";
+    return "#ff3300";
   }
   else if (current_status == "accomplished") {
-    return "green";
+    return "lightgreen";
   }
   else if (current_status == "archive") {
     return "lightGrey";
@@ -906,23 +906,23 @@ export const ordersGrid = [
     textAlign: 'Center',
   },
   {
-    headerText: 'current_status',
+    headerText: 'status',
     template: gridOrderStatus,
-    field: 'status',
+    field: 'current_status',
     textAlign: 'Center',
     width: '80',
   },
-  {
-    field: 'task_type',
-    headerText: 'task type',
-    width: '80',
-    textAlign: 'Center',
-  },
+  // {
+  //   field: 'task_type',
+  //   headerText: 'task type',
+  //   width: '80',
+  //   textAlign: 'Center',
+  // },
 
   {
     field: 'scheduled_at',
     headerText: 'scheduled at',
-    width: '150',
+    width: '100',
     textAlign: 'Center',
   },
 ];

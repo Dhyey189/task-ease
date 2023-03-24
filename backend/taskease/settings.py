@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'tasks',
     'statuses',
     'django_celery_results',
+    'django_celery_beat',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
@@ -180,12 +181,20 @@ GOOGLE_CLIENT_SECRET = env('GOOGLE_CLIENT_SECRET')
 FRONTEND_BASE_URL = env('FRONTEND_BASE_URL')
 BACKEND_BASE_URL = env('BACKEND_BASE_URL')
 
+# send mail settings.
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'taskeaseapp@gmail.com'
+EMAIL_HOST_PASSWORD = env('MAIL_PASSWORD')
+
 # CELERY SETTINGS
 
 CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'ASia/Kolkata'
+CELERY_TIMEZONE = 'Asia/Kolkata'
 
 CELERY_RESULT_BACKEND = 'django-db'
