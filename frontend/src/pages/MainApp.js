@@ -29,6 +29,7 @@ import {
 import NewTask from "./NewTask";
 import NewCategory from "./NewCategory";
 import Tasks from "./Tasks"
+import Welcome from "./Welcome"
 
 const MainApp = () => {
   const {
@@ -95,6 +96,7 @@ const MainApp = () => {
           <Route path="/ecommerce" element={<Ecommerce />} />
 
           {/* pages  */}
+          <Route path="/" element={<Welcome />} />
           <Route path="/tasks" element={<Tasks />} />
           <Route path="/employees" element={<Employees />} />
           <Route path="/customers" element={<Customers />} />

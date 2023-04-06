@@ -110,7 +110,7 @@ const NewTask = () => {
   }
 
   return (
-    <div className="flex-col flex items-center dark:text-white text-2xl">
+    <div className="flex-col flex items-center text-white text-2xl">
       <div className="w-3/6 ">
         <div className="">
           <b>New Task</b>
@@ -156,7 +156,7 @@ const NewTask = () => {
               }}
               cssClass={validationClass["category"]}
               dataSource={categories}
-              placeholder="Choose a category"
+              placeholder="category"
               popupHeight="220px"
             />
           )}
@@ -175,7 +175,7 @@ const NewTask = () => {
               }}
               dataSource={task_type}
               cssClass={`${validationClass["task-type"]} border-2`}
-              placeholder="Choose type of task"
+              placeholder="task type"
               popupHeight="220px"
             />
           )}

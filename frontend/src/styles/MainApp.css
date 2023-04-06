@@ -49,7 +49,7 @@
 
 /* To specify font size and color */
 .e-float-input.e-control-wrapper:not(.e-error) input:valid ~ label.e-float-text, .e-float-input.e-control-wrapper:not(.e-error) input ~ label.e-label-top.e-float-text {
-  color: inherit;
+  color: white;
   font-size: 16px;
 }
 
