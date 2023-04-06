@@ -17,7 +17,7 @@ const Welcome = () => {
                 Your peace of mind is priceless
                 </p>
                 <p>Well done, {user.name}! 
-                All your team's tasks are organized 
+                All your tasks are organized 
                 in the right place.</p>
             </p>
         </div>

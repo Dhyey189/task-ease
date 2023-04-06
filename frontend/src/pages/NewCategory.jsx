@@ -9,16 +9,28 @@ import "../styles/MainApp.css";
 import axios from "axios";
 import getWithExipry from "../utils/GetWithExpiry";
 import { useStateContext } from "../contexts/ContextProvider";
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 
 const NewCategory = () => {
     const { currentMode,currentColor } = useStateContext();
     const [categories, setCategories] = useState();
     const user = getWithExipry("user");
     const navigate = useNavigate();
-    const [categoryname,setCategoryName] = useState("");
-    const [categorydescription,setCategoryDescription] = useState("");
-
+    const [categoryname,setCategoryName] = useState(null);
+    const [categorydescription,setCategoryDescription] = useState(null);
+    const [alert, setAlert] = useState(false)
+    const [errmessage, setErrorMessage] = useState(null);
     function createCategory(){
+        var message = ""
+        if(!categoryname) {
+          setAlert(true)
+          setErrorMessage("Category title is required!")
+          return;
+        } 
+        setAlert(false)
+        setErrorMessage(null)
+
         const category = {
             "name" : categoryname,
             "description" : categorydescription,
@@ -55,6 +67,16 @@ const NewCategory = () => {
                 change={(e) => setCategoryDescription(e.value)}
               ></TextBoxComponent>
             </div>
+          </div>
+          <div className="m-10">
+            {
+            alert && errmessage &&
+            (<Alert severity="error">
+            <AlertTitle>Error</AlertTitle>
+            <span style={{"whiteSpace" : "pre-line"}}>{errmessage}</span>
+                    
+            </Alert>)
+            }
           </div>
           <div>
           <Button

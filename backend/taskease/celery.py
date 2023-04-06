@@ -25,8 +25,8 @@ app.conf.beat_schedule = {
         'task': 'accounts.tasks.task_send_remainders_before_four_hours',
         'schedule': crontab(minute="*/10"),
     },
-    'make-open-expired-task-due' : {
-        'task' : 'accounts.tasks.task_make_open_expired_task_due',
+    'make-open-expired-task-missed' : {
+        'task' : 'accounts.tasks.task_make_open_expired_task_missed',
         'schedule' : crontab(minute="*/2"),
     },
     'referesh-daily-goal' : {

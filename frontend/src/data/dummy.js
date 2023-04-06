@@ -37,7 +37,7 @@ const get_current_status_color = (current_status) => {
   if (current_status == "open") {
     return "yellow";
   }
-  else if (current_status == "due") {
+  else if (current_status == "missed") {
     return "#ff3300";
   }
   else if (current_status == "accomplished") {
@@ -833,7 +833,7 @@ export const productsPerformance = [
 export const medicalproBranding = {
   data: [
     {
-      title: 'Due Date',
+      title: 'missed Date',
       desc: 'Oct 23, 2021',
     },
     {

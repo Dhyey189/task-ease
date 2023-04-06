@@ -8,10 +8,14 @@ import axios from "axios";
 import storeUser from "../utils/StoreUser";
 import getWithExpiry from "../utils/GetWithExpiry";
 
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 function Login() {
   const navigate = useNavigate();
   const [queryParameters] = useSearchParams();
   const [error, setError] = useState(null);
+  const [alert, setAlert] = useState(false)
+  const [errmessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     if (getWithExpiry("user")) {
@@ -29,7 +33,8 @@ function Login() {
         })
         .catch((error) => {
           console.log(error.response);
-          alert(error.response.data)
+          setAlert(true);
+          setErrorMessage("User not found! Please try using another account.")
         });
     } else if (queryParameters.get("error")) {
       console.log(queryParameters.get("error"));
@@ -69,6 +74,16 @@ function Login() {
             TaskEase.
           </Link>{" "}
         </p>
+        <div className="m-5">
+        {
+         alert && errmessage &&
+        (<Alert severity="error">
+        <AlertTitle>Error</AlertTitle>
+        <span style={{"whiteSpace" : "pre-line"}}>{errmessage}</span>
+                
+        </Alert>)
+        }
+      </div>
         <button className="flex flex-row text-2xl border-2 border-solid border-black rounded-3xl p-1.5 ml-10 mt-24 hover:bg-black hover:text-white" onClick={openGoogleLoginPage}>
           <i className="p-1.5">
             <FcGoogle />

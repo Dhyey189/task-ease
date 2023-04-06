@@ -60,7 +60,7 @@ def task_send_remainders_before_four_hours():
 
 @shared_task
 @transaction.atomic
-def task_make_open_expired_task_due():
+def task_make_open_expired_task_missed():
     query_set = Task.objects.all()
     query_set = query_set.filter(current_status = Status.objects.get(name = "open"), scheduled_at__lte = datetime.now())
     for task in query_set:
@@ -69,12 +69,12 @@ def task_make_open_expired_task_due():
         task_status.is_current = False
         task_status.save()
 
-        # changing current status of task to due
-        task.current_status = Status.objects.get(name = "due")
+        # changing current status of task to missed
+        task.current_status = Status.objects.get(name = "missed")
         task.save()
 
-        # creating new instance for the task with due status 
-        TaskStatus.objects.create(task = task,status = Status.objects.get(name = "due"), is_current = True)
+        # creating new instance for the task with missed status 
+        TaskStatus.objects.create(task = task,status = Status.objects.get(name = "missed"), is_current = True)
 
 @shared_task
 @transaction.atomic

@@ -9,6 +9,8 @@ import "../styles/MainApp.css";
 import axios from "axios";
 import getWithExipry from "../utils/GetWithExpiry";
 import { useStateContext } from "../contexts/ContextProvider";
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 
 const NewTask = () => {
   const { currentMode,currentColor } = useStateContext();
@@ -38,7 +40,8 @@ const NewTask = () => {
   }
   const [isValid, setIsValid ] = useState(false);
   const currentDate = new Date()
-  
+  const [alert, setAlert] = useState(false)
+  const [errmessage, setErrorMessage] = useState(null);
   useEffect(() => {
     axios
     .get(`http://127.0.0.1:8000/task/categories-list/${user.id}/`)
@@ -54,6 +57,8 @@ const NewTask = () => {
   const createTask = () => {
     if (!validated()) {
       console.log("Validation error");
+      setAlert(true)
+      if(validationClass["title"] == "e-error")
       return;
     }
     console.log(taskScheduledAt.toString())
@@ -78,35 +83,36 @@ const NewTask = () => {
 
   const validated = () => {
     var cnt = 0;
+    var message = ""
     if (taskname) {
-      validationClass["title"] = "e-success"
       cnt++;
     }
     else{
-      validationClass["title"] = "e-error"
-    }
-    if (taskdescription) {
-      validationClass["description"] = "e-success"
-      cnt++;
-    }
-    else{
-      validationClass["description"] = "e-error"
+      message+="title is required!\n"
     }
     if (taskcategory) {
-      validationClass["category"] = "e-success"
       cnt++;
     }
     else{
-      validationClass["category"] = "e-error"
+      message+="category is required!\n"
     }
     if (tasktype) {
-      validationClass["task-type"] = "e-success"
       cnt++;
     }
     else{
-      validationClass["task-type"] = "e-error"
+      message+="tasktype is required!\n"
     }
-    return cnt>=4;
+    if (taskScheduledAt) {
+      cnt++;
+    }
+    else{
+      message+="scheduled at is required!"
+    }
+    if (message != "")
+      setErrorMessage(message)
+    else 
+      setErrorMessage(null)
+    return cnt>=3;
   }
 
   return (
@@ -193,6 +199,16 @@ const NewTask = () => {
         min={currentDate}
         ></DateTimePickerComponent>
         </div>
+      </div>
+      <div className="m-10">
+        {
+         alert && errmessage &&
+        (<Alert severity="error">
+        <AlertTitle>Error</AlertTitle>
+        <span style={{"whiteSpace" : "pre-line"}}>{errmessage}</span>
+                
+        </Alert>)
+        }
       </div>
       <div>
       <Button

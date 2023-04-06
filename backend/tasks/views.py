@@ -121,14 +121,15 @@ def get_last_six_months():
         now = now.replace(day=1) - timedelta(days=1)
         result.append(now.strftime("%B %Y"))
     result.reverse()
-    return result
+
+    return result[-6:] if len(result) > 6 else result
 
 @api_view(["GET"])
 @transaction.atomic
 def get_analysis_data(request, user_id):
     user = User.objects.get(id = user_id)
     last_six_months = get_last_six_months()
-    statuses = ["open", "accomplished", "due" ,"archive"] 
+    statuses = ["total","open", "accomplished", "missed" ,"archive"] 
     analysis_data = []
     for status in statuses:
         # {"x" month_year , "y" : count}
@@ -137,7 +138,12 @@ def get_analysis_data(request, user_id):
             column = {}
             column["x"] = month_year
             month_datetime = datetime.strptime(month_year,'%B %Y')
-            column["y"] = TaskStatus.objects.filter(task__user = user,status = Status.objects.get(name = status), created_at__month = month_datetime.month).count()
+            if status == "open":
+                column["y"] = TaskStatus.objects.filter(task__user = user,status = Status.objects.get(name = status), created_at__month = month_datetime.month, is_current = True).count()
+            elif status == "total":
+                column["y"] = TaskStatus.objects.filter(task__user = user,status = Status.objects.get(name = "open"), created_at__month = month_datetime.month).count()
+            else:
+                column["y"] = TaskStatus.objects.filter(task__user = user,status = Status.objects.get(name = status), created_at__month = month_datetime.month).count()
             number_of_task.append(column)
         status_data = {
             "dataSource": number_of_task,
@@ -154,5 +160,4 @@ def get_analysis_data(request, user_id):
             },
         }
         analysis_data.append(status_data)
-        print(analysis_data)
     return Response(analysis_data,200)
